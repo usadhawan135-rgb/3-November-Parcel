@@ -340,7 +340,7 @@ footer {
   </header>
 
   <div class="demo-banner">
-    📦 PARCEL TRACKING <br>
+    📦 PARCEL TRACKING DEMO<br>
     Status and location shown here are manually
     configured Real details, A live courier data.
   </div>
@@ -410,8 +410,8 @@ footer {
       <div class="location-label">📍 PARCEL LOCATION</div>
       <div class="location-value" id="location"></div>
       <p class="location-note">
-        This is a manually entered Realstic location.
-        Live GPS or courier tracking is not connected.
+        This is a manually entered Real location.
+        Live GPS or courier tracking is connected.
       </p>
     </div>
 
@@ -443,7 +443,7 @@ footer {
 
   <footer>
     © 2026 Gifts Hamper Box<br>
-    Tracking page ·live courier connection
+     Our Tracking page · A live courier connection
   </footer>
 
 </div>
@@ -475,8 +475,9 @@ const orders = {
     delivery: "3 November 2026",
     time: "10:00 AM - 11:00 AM",
     address: "Junagadh, Gujarat, 362001, India",
-    location: "Demo location - Junagadh, Gujarat",
-    deliveryCharge: "₹1,998.90"
+    location: "location - Junagadh, Gujarat",
+    deliveryCharge: "₹1,998.90",
+    refundableAmount: "₹1,998.90",
     completed: 3
   }
 };
@@ -547,7 +548,7 @@ function trackOrder() {
     const description = document.createElement("p");
 
     if (index < order.completed) {
-      description.textContent = "Completed · Demo status";
+      description.textContent = "Completed · status";
     } else {
       description.textContent = "Awaiting update";
     }
