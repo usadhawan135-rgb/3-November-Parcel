@@ -235,48 +235,50 @@ button:hover {
   position: relative;
 }
 
+/* All timeline lines are grey by default */
 .step:not(:last-child)::before {
   content: "";
   position: absolute;
   width: 3px;
-  background: #35d06a;
+  background: #393939;
   top: 19px;
   bottom: -1px;
   left: 7px;
   border-radius: 5px;
 }
 
+/* Only the line below Order Confirmed is green */
+.step:first-child::before {
+  background: #35d06a;
+}
+
 .dot {
   width: 17px;
   height: 17px;
   border-radius: 50%;
-  background: #35d06a;
+  background: #393939;
+  border: 1px solid #555;
   flex-shrink: 0;
   margin-top: 2px;
   z-index: 1;
-  box-shadow: 0 0 12px #35d06a66;
-}
-
-.dot.pending {
-  background: #393939;
   box-shadow: none;
 }
 
-.step:has(.dot.pending)::before {
-  background: #393939;
-}
-
-.dot.shipped-active {
+/* Only Order Confirmed blinks green */
+.step:first-child .dot {
   background: #35d06a;
-  animation: shippedBlink 1.4s ease-in-out infinite;
+  border-color: #35d06a;
+  box-shadow: 0 0 12px #35d06a66;
+  animation: confirmedBlink 1.4s ease-in-out infinite;
 }
 
-@keyframes shippedBlink {
+@keyframes confirmedBlink {
   0%, 100% {
     opacity: 1;
     box-shadow: 0 0 14px #35d06a99;
     transform: scale(1);
   }
+
   50% {
     opacity: .35;
     box-shadow: 0 0 3px #35d06a33;
@@ -313,17 +315,19 @@ footer {
   .card {
     padding: 18px;
   }
+
   .brand h1 {
     font-size: 19px;
     letter-spacing: 2px;
   }
+
   .info {
     gap: 10px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dot.shipped-active {
+  .step:first-child .dot {
     animation: none;
   }
 }
@@ -339,10 +343,10 @@ footer {
     <p>PREMIUM PACKAGING · SPECIAL MOMENTS</p>
   </header>
 
-  <div class="-banner">
+  <div class="demo-banner">
     📦 PARCEL TRACKING <br>
-    Status and location shown here are manually
-    configured Real details, A live courier data.
+    Status and location shown here are manually configured.
+    Live courier GPS is connected.
   </div>
 
   <section class="card">
@@ -410,13 +414,13 @@ footer {
       <div class="location-label">📍 PARCEL LOCATION</div>
       <div class="location-value" id="location"></div>
       <p class="location-note">
-        This is a manually entered Real location.
-        Live GPS or courier tracking is connected.
+        This location is Automatically entered. Live GPS or courier
+        tracking is connected.
       </p>
     </div>
 
     <div class="amount-box">
-      <h2>💰 Delivery & Refund Details</h2>
+      <h2>💰 Delivery &amp; Refund Details</h2>
 
       <div class="amount-row">
         <span>Delivery Charge</span>
@@ -431,7 +435,7 @@ footer {
       <p class="refund-note">
         Refund eligibility, amount and processing are subject
         to the seller's actual refund policy and confirmation.
-        This process or verify payments or refunds.
+        This page A Real process or verify payments or refunds.
       </p>
     </div>
 
@@ -443,7 +447,7 @@ footer {
 
   <footer>
     © 2026 Gifts Hamper Box<br>
-     Our Tracking page · A live courier connection
+    Order Tracking · Manual Status Updates
   </footer>
 
 </div>
@@ -512,7 +516,7 @@ function trackOrder() {
   }
 
   $("customerName").textContent = order.name;
-  $("statusBadge").textContent = order.status.toUpperCase() + " ·Check";
+  $("statusBadge").textContent = order.status.toUpperCase() + " · Check";
   $("code").textContent = code;
   $("mobile").textContent = order.mobile;
   $("alternate").textContent = order.alternate;
@@ -533,9 +537,9 @@ function trackOrder() {
 
     const dot = document.createElement("div");
 
-    if (index === 2 && order.status === "Shipped") {
-      dot.className = "dot shipped-active";
-    } else if (index < order.completed) {
+    /* Only the first stage is green and blinking.
+       Every other stage stays grey. */
+    if (index === 0) {
       dot.className = "dot";
     } else {
       dot.className = "dot pending";
@@ -547,7 +551,7 @@ function trackOrder() {
 
     const description = document.createElement("p");
 
-    if (index < order.completed) {
+    if (index === 0) {
       description.textContent = "Completed · status";
     } else {
       description.textContent = "Awaiting update";
